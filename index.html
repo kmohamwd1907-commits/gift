@@ -107,7 +107,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #fff;outline-offset:2
  
  
 <section id="gate" class="card hide" style="margin-top:8vh">
- 
+  <div class="slot round avatar hide" id="avSlot" style="cursor:default"></div>
   <h1>جاهزة؟ 🤔</h1>
   <p>كل اللي هنا هيفضل بيني وبينك طول العمر ❤️</p>
   <input id="pw" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="الباسورد" aria-label="الباسورد" style="margin-top:14px">
@@ -207,6 +207,8 @@ const CFG={
     storyVideo:"" /* فيديو آخر مكان في ذكرياتنا الجميلة */
   },
   /* الصور: حطي اسم كل صورة بالترتيب (15 صورة) بين العلامتين، وسيبي الفاضي "" لو عايزاها من الصفحة */
+  /* صورتك الشخصية (الدايرة): حطي اسم الصورة هنا، وسيبيها "" لو عايزاها تتضاف من الصفحة */
+  avatar:"me.jpg", /* اسم صورتك الشخصية (في نفس فولدر الملف)، لو فاضي الدايرة مش بتظهر */
   photos:["1.jpg","2.jpg","3.jpg","4.jpg","5.jpg","6.jpg","7.jpg","8.jpg","9.jpg","10.jpg","11.jpg","12.jpg","13.jpg","14.jpg"],
   songName:"أغنيتنا ❤️",
   /* قايمة الأغاني: ضيفي أي عدد، كل أغنية لما تخلص اللي بعدها تشتغل، وبعد الأخيرة ترجع للأولى */
@@ -223,7 +225,7 @@ const $=id=>document.getElementById(id);
 $('iName').textContent=CFG.nameEn;$('iLine').textContent=CFG.first;$('hName').textContent=CFG.nameEn;$('hLine').textContent=CFG.first;$('eLine').textContent=CFG.first;$('mName').textContent=CFG.name;$('songName').textContent=CFG.songName;
  
 function bindSlot(s){const f=s.querySelector('input');if(!f)return;f.onchange=e=>{const file=e.target.files[0];if(!file)return;let im=s.querySelector('img');if(!im){im=document.createElement('img');s.appendChild(im)}im.alt='';im.src=URL.createObjectURL(file);s.classList.add('has')}}
-bindSlot($('avSlot'));
+(function(){const a=$('avSlot');if(CFG.avatar){const im=document.createElement('img');im.alt='';im.onerror=()=>a.classList.add('hide');im.src=CFG.avatar;a.appendChild(im);a.classList.add('has');a.classList.remove('hide')}})();
 $('story').innerHTML=CFG.story.map((t,i)=>{
   const v=(i===CFG.story.length-1)?CFG.media.storyVideo:'';
   if(v)return `<section class="card"><div class="mbox" style="margin:0"><div class="mslot vid has"><video class="auto" muted loop autoplay playsinline preload="auto" src="${v}"></video></div></div><div class="cap">${t}</div></section>`;
